@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"regexp"
 	"strconv"
 	"strings"
 )
@@ -19,9 +20,10 @@ func (m *multiFlag) Set(value string) error {
 }
 
 type queryFilter struct {
-	start *int
-	match []string
-	id    *string
+	start    *int
+	match    []*regexp.Regexp
+	contains []string
+	id       *string
 }
 
 func parseQueryFlags(values []string) (queryFilter, error) {
@@ -44,7 +46,13 @@ func parseQueryFlags(values []string) (queryFilter, error) {
 			}
 			filter.start = &idx
 		case "match":
-			filter.match = append(filter.match, value)
+			re, err := regexp.Compile(value)
+			if err != nil {
+				return filter, fmt.Errorf("invalid regex in match: %s", err)
+			}
+			filter.match = append(filter.match, re)
+		case "contains":
+			filter.contains = append(filter.contains, value)
 		case "id":
 			if filter.id != nil {
 				return filter, errors.New("id query specified multiple times")
@@ -82,12 +90,15 @@ func matchesCell(c cell, idx int, filter queryFilter) bool {
 			return false
 		}
 	}
-	if len(filter.match) > 0 {
-		text := cellText(c)
-		for _, m := range filter.match {
-			if !strings.Contains(text, m) {
-				return false
-			}
+	text := cellText(c)
+	for _, re := range filter.match {
+		if !re.MatchString(text) {
+			return false
+		}
+	}
+	for _, s := range filter.contains {
+		if !strings.Contains(text, s) {
+			return false
 		}
 	}
 	return true

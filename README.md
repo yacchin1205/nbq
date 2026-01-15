@@ -22,7 +22,8 @@ All commands read an `.ipynb` JSON from stdin (or `--file`) and write the result
 Use `--query TYPE:VALUE` to locate the starting cell. Multiple `--query` flags are ANDed.
 
 - `start:37` – absolute cell index.
-- `match:"Crossref"` – substring or regex against headings/Markdown/code.
+- `match:"pattern"` – regex against headings/Markdown/code.
+- `contains:"text"` – substring match against headings/Markdown/code.
 - `id:abc123` – Jupyter cell_id field.
 
 Examples:
