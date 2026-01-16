@@ -11,6 +11,7 @@ func runCells(args []string) error {
 	file := fs.String("file", "", "path to .ipynb (defaults to stdin)")
 	sets := fs.Int("sets", 1, "number of Markdown+code pairs")
 	format := fs.String("format", "md", "output format: md, json, or py")
+	excludeOutputs := fs.Bool("exclude-outputs", false, "exclude cell outputs from JSON output")
 	var queryFlags multiFlag
 	fs.Var(&queryFlags, "query", "cell query ("+queryUsage+")")
 	if err := fs.Parse(args); err != nil {
@@ -43,7 +44,7 @@ func runCells(args []string) error {
 		return err
 	}
 
-	return renderSections(*format, sections)
+	return renderSections(*format, sections, renderOptions{excludeOutputs: *excludeOutputs})
 }
 
 func collectCellSets(nb *notebook, startIdx, count int) ([]sectionBlock, error) {

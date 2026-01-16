@@ -221,3 +221,12 @@ func cloneCells(cells []cell) []cell {
 	copy(res, cells)
 	return res
 }
+
+func excludeOutputs(cells []cell) []cell {
+	res := make([]cell, len(cells))
+	for i, c := range cells {
+		res[i] = c
+		res[i].Outputs = nil
+	}
+	return res
+}

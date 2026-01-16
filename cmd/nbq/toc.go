@@ -13,6 +13,7 @@ func runTOC(args []string) error {
 	file := fs.String("file", "", "path to .ipynb (defaults to stdin)")
 	words := fs.Int("words", 20, "number of preview words")
 	format := fs.String("format", "md", "output format: md or json")
+	noOutputs := fs.Bool("exclude-outputs", false, "exclude cell outputs from JSON output")
 	if err := fs.Parse(args); err != nil {
 		return err
 	}
@@ -32,6 +33,9 @@ func runTOC(args []string) error {
 		printHeadingsMarkdown(headings)
 	case "json":
 		headingCells := extractHeadingCells(nb)
+		if *noOutputs {
+			headingCells = excludeOutputs(headingCells)
+		}
 		payload := map[string]any{
 			"cells": headingCells,
 		}

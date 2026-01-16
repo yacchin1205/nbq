@@ -22,12 +22,19 @@ type sectionBlock struct {
 	Cells []cell
 }
 
-func renderSections(format string, sections []sectionBlock) error {
+type renderOptions struct {
+	excludeOutputs bool
+}
+
+func renderSections(format string, sections []sectionBlock, opts renderOptions) error {
 	switch format {
 	case "md":
 		printSectionsMarkdown(sections)
 	case "json":
 		cells := flattenSectionCells(sections)
+		if opts.excludeOutputs {
+			cells = excludeOutputs(cells)
+		}
 		payload := map[string]any{
 			"cells": cells,
 		}
