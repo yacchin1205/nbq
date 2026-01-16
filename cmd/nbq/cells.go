@@ -12,7 +12,7 @@ func runCells(args []string) error {
 	sets := fs.Int("sets", 1, "number of Markdown+code pairs")
 	format := fs.String("format", "md", "output format: md, json, or py")
 	var queryFlags multiFlag
-	fs.Var(&queryFlags, "query", "cell query (start:N, match:TEXT, id:ID)")
+	fs.Var(&queryFlags, "query", "cell query ("+queryUsage+")")
 	if err := fs.Parse(args); err != nil {
 		return err
 	}

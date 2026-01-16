@@ -20,7 +20,7 @@ func runOutputs(args []string) error {
 	format := fs.String("format", "text", "output format: text, json, or raw")
 	mime := fs.String("mime", "", "specific MIME type to extract")
 	var queryFlags multiFlag
-	fs.Var(&queryFlags, "query", "cell query (start:N, match:TEXT, id:ID)")
+	fs.Var(&queryFlags, "query", "cell query ("+queryUsage+")")
 	if err := fs.Parse(args); err != nil {
 		return err
 	}

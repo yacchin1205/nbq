@@ -8,6 +8,8 @@ import (
 	"strings"
 )
 
+const queryUsage = "start:N, match:REGEX, contains:TEXT, id:ID"
+
 type multiFlag []string
 
 func (m *multiFlag) String() string {

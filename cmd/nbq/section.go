@@ -12,7 +12,7 @@ func runSection(args []string) error {
 	sets := fs.Int("sets", 1, "number of consecutive sections to return")
 	format := fs.String("format", "md", "output format: md, json, or py")
 	var queryFlags multiFlag
-	fs.Var(&queryFlags, "query", "section query (start:N, match:TEXT, id:ID)")
+	fs.Var(&queryFlags, "query", "section query ("+queryUsage+")")
 	if err := fs.Parse(args); err != nil {
 		return err
 	}
