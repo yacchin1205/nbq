@@ -15,7 +15,7 @@ All commands read an `.ipynb` JSON from stdin (or `--file`) and write the result
 - `nbq toc` – emit Markdown headings with a short preview (`--words`, `--format md|json`). JSON returns heading-only cells annotated with `_index` (original cell position).
 - `nbq section` – start from a query (see below) and return Markdown+code sets, including nested subsections until the next peer heading (`--sets`, `--format md|json|py`). JSON returns the selected cells with `_index` fields.
 - `nbq cells` – same as `section` but anchored by absolute cell order (`--query start:40`). JSON also emits `_index`-annotated cells.
-- `nbq outputs` – extract the outputs array for the matched cell (`--outputs text|mime=image/png|raw`).
+- `nbq outputs` – extract the outputs array for the matched cell (`--format text|json|raw`, `--mime`).
 
 ### Queries (shared by section/cells/outputs)
 
@@ -31,5 +31,5 @@ Examples:
 ```bash
 nbq section --query match:"## Crossref" --sets 2 < notebook.ipynb
 nbq cells --query start:40 --sets 1 --format py < notebook.ipynb
-nbq outputs --query id:1234abcd --outputs mime=image/png < notebook.ipynb > screenshot.png
+nbq outputs --query id:1234abcd --format raw --mime image/png < notebook.ipynb > screenshot.png
 ```
